@@ -36,7 +36,7 @@ namespace GlobalErrorHandling.Extensions
                             await context.Response.WriteAsync(new GlobalErrorHandling.Models.ErrorDetails()
                             {
                                 StatusCode = (int)HttpStatusCode.InternalServerError,
-                                Message = "Internal server error from exception handling"
+                                Message = "technical error occured,"
 
                             }.ToString()) ;
                         }
