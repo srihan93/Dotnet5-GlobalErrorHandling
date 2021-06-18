@@ -22,11 +22,27 @@ namespace GlobalErrorHandling.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if(contextFeature!=null)
                     {
-                        await context.Response.WriteAsync(new GlobalErrorHandling.Models.ErrorDetails()
+                        if(contextFeature.Error is System.ArgumentNullException)
                         {
-                            StatusCode = context.Response.StatusCode,
-                            Message = "Unexpected Internal Server Error"
-                        }.ToString()); 
+                            await context.Response.WriteAsync(new GlobalErrorHandling.Models.ErrorDetails()
+                            {
+                                StatusCode = (int)HttpStatusCode.BadRequest,
+                                Message = "the inputs is null"
+
+                            }.ToString());
+                        }
+                        else
+                        {
+                            await context.Response.WriteAsync(new GlobalErrorHandling.Models.ErrorDetails()
+                            {
+                                StatusCode = (int)HttpStatusCode.InternalServerError,
+                                Message = "Internal server error from exception handling"
+
+                            }.ToString()) ;
+                        }
+
+
+                        
                     }
                 }
                     );
