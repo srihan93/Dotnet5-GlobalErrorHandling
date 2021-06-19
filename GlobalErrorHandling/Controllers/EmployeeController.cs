@@ -1,11 +1,8 @@
 ﻿using GlobalErrorHandling.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using GlobalErrorHandling.Exceptions;
-using GlobalErrorHandling.Models;
 using System.Net;
 
 namespace GlobalErrorHandling.Controllers
