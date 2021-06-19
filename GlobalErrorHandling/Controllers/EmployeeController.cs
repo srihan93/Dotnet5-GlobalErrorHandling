@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GlobalErrorHandling.Exceptions;
 using System.Net;
+using GlobalErrorHandling.Extensions;
 
 namespace GlobalErrorHandling.Controllers
 {
@@ -38,17 +39,14 @@ namespace GlobalErrorHandling.Controllers
             return employees;
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Employee), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetails),(int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
+        [ServiceFilter(typeof(ValidateAttributeFilter))]
         public Employee GetById(int id)
         {
-            if(id<=0)
-            {
-                throw new CustomBadRequest("Employee :" + id + " is not valid");
-            }
             var employee  = employees.Where(e =>e.Id==id).FirstOrDefault();
             if(employee==null)
             {
