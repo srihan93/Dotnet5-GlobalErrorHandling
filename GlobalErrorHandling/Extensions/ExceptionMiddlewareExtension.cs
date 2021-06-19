@@ -2,11 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace GlobalErrorHandling.Extensions
 {
@@ -16,24 +12,21 @@ namespace GlobalErrorHandling.Extensions
         {
             app.UseExceptionHandler(error =>
             {
-                error.Run(async context=>
+                error.Run(async context =>
                 {
-                    
                     context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    if(contextFeature != null)
+                    if (contextFeature != null)
                     {
-                        if(contextFeature.Error is System.ArgumentNullException)
+                        if (contextFeature.Error is System.ArgumentNullException)
                         {
                             await context.Response.WriteAsync(new GlobalErrorHandling.Models.ErrorDetails()
                             {
                                 StatusCode = (int)HttpStatusCode.BadRequest,
                                 Message = "the inputs is null"
-
                             }.ToString());
                         }
-
-                        else if(contextFeature.Error is CustomBadRequest)
+                        else if (contextFeature.Error is CustomBadRequest)
                         {
                             const int badRequest = (int)HttpStatusCode.BadRequest;
                             context.Response.StatusCode = badRequest;
@@ -41,12 +34,8 @@ namespace GlobalErrorHandling.Extensions
                             {
                                 StatusCode = badRequest,
                                 Message = contextFeature.Error.Message
-
                             }.ToString());
-                            
-
                         }
-
                         else if (contextFeature.Error is ItemNotFound)
                         {
                             const int notFound = (int)HttpStatusCode.NotFound;
@@ -55,9 +44,7 @@ namespace GlobalErrorHandling.Extensions
                             {
                                 StatusCode = (int)HttpStatusCode.BadRequest,
                                 Message = contextFeature.Error.Message
-
                             }.ToString());
-                          
                         }
                         else
                         {
@@ -67,13 +54,8 @@ namespace GlobalErrorHandling.Extensions
                             {
                                 StatusCode = (int)HttpStatusCode.InternalServerError,
                                 Message = "technical error occured,"
-
-                            }.ToString()) ;
-                            
+                            }.ToString());
                         }
-
-
-                        
                     }
                 }
                     );

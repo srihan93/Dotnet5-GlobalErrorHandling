@@ -8,7 +8,6 @@ namespace GlobalErrorHandling.Extensions
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
@@ -18,7 +17,6 @@ namespace GlobalErrorHandling.Extensions
             {
                 throw new CustomBadRequest("Employee :" + id + " is not valid");
             }
-
         }
     }
 }

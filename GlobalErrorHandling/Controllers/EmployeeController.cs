@@ -1,10 +1,10 @@
-﻿using GlobalErrorHandling.Models;
+﻿using GlobalErrorHandling.Exceptions;
+using GlobalErrorHandling.Extensions;
+using GlobalErrorHandling.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using GlobalErrorHandling.Exceptions;
 using System.Net;
-using GlobalErrorHandling.Extensions;
 
 namespace GlobalErrorHandling.Controllers
 {
@@ -29,28 +29,26 @@ namespace GlobalErrorHandling.Controllers
 
         public EmployeeController()
         {
-                
         }
 
         [HttpGet]
         public IEnumerable<Employee> Get()
         {
-
             return employees;
         }
 
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Employee), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorDetails),(int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.BadRequest)]
         [ServiceFilter(typeof(ValidateAttributeFilter))]
         public Employee GetById(int id)
         {
-            var employee  = employees.Where(e =>e.Id==id).FirstOrDefault();
-            if(employee==null)
+            var employee = employees.Where(e => e.Id == id).FirstOrDefault();
+            if (employee == null)
             {
-                throw new ItemNotFound("Employee :"+id+" was not found");
+                throw new ItemNotFound("Employee :" + id + " was not found");
             }
             return employee;
         }
